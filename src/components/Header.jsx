@@ -7,11 +7,12 @@ import spotfyGreenIcon from '../../public/images/icons/spotify-green.svg'
 import spotfyRedIcon from '../../public/images/icons/spotify-red.svg'
 import instagramGreenIcon from '../../public/images/icons/instagram-green.svg'
 import instagramRedIcon from '../../public/images/icons/instagram-red.svg'
+import { Container } from "./Container"
 
 const Header = () => {
     return (
         <HeaderStyled>
-            <div className="container">
+            <HeaderContainer>
 
                 <Logo href="/">
                     <img src="/images/logo-textuaria-amarelo.webp" alt="Textuaria" />
@@ -41,39 +42,28 @@ const Header = () => {
                     <SocialIcon href="www.facebook.com" target="_blank" primaryImage={spotfyGreenIcon} secondaryImage={spotfyRedIcon} />
                     <SocialIcon href="www.facebook.com" target="_blank" primaryImage={instagramGreenIcon} secondaryImage={instagramRedIcon} />
                 </SocialIcons>
-            </div>
+            </HeaderContainer>
         </HeaderStyled>
     )
 }
 
 export { Header }
 
-const animateBlinkTextCursor = keyframes`
-    0%, 100% {
-        border-right-color: #00000075;
-    }
-    50% {
-        border-right-color: transparent;
-    }
-`
-
 const HeaderStyled = styled.header`
     width: 100vw;
     height: 50px;
     background-color: var(--yellow);
-    position: sticky;
-    top: 70px;
-    margin-top: 50px;
+    position: fixed;
+    top: 50px;
+    z-index: 9999;
+`
 
-    .container {
-        max-width: 1440px;
+const HeaderContainer = styled(Container)`
         height: 100%;
-        margin: 0 auto;
         position: relative;
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
 `
 
 const Logo = styled.a`
@@ -81,6 +71,7 @@ const Logo = styled.a`
     transition: 200ms ease-in-out;
     border-radius: 50%;
     box-shadow: 0 0 10px #00000025;
+    min-width: 100px;
 
     &:hover {
         scale: 1.05;
@@ -116,6 +107,12 @@ const MenuLinksList = styled.ul`
 
     li {
         margin: 0px 25px;
+
+        &.active {
+            a {
+                font-weight: 600;
+            }
+        }
         
         a {
             display: block;
@@ -128,9 +125,10 @@ const MenuLinksList = styled.ul`
                 content: '';
                 display: block;
                 position: absolute;
-                bottom: -15px;
+                bottom: -13px;
                 border-bottom: 3px solid var(--red);
                 width: 0;
+                height: 0;
                 transition: 200ms ease-in-out;
             }  
 
