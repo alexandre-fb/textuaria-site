@@ -1,47 +1,59 @@
-import Image from "next/image"
-import Link from "next/link"
-import styled, { keyframes } from "styled-components"
-import facebookGreenIcon from '../../public/images/icons/facebook-green.svg'
-import facebookRedIcon from '../../public/images/icons/facebook-red.svg'
-import spotfyGreenIcon from '../../public/images/icons/spotify-green.svg'
-import spotfyRedIcon from '../../public/images/icons/spotify-red.svg'
-import instagramGreenIcon from '../../public/images/icons/instagram-green.svg'
-import instagramRedIcon from '../../public/images/icons/instagram-red.svg'
+import styled from "styled-components"
+import { FacebookIcon } from '../../public/images/icons/FacebookIcon'
+import { InstagramIcon } from '../../public/images/icons/InstagramIcon'
+import { SpotifyIcon } from '../../public/images/icons/SpotifyIcon'
 import { Container } from "./Container"
+import LogoTextuaria from "../../public/images/logo-textuaria"
+import { useState } from "react"
 
 const Header = () => {
+
+    const [activeMobileMenu, setActiveMobileMenu] = useState(false)
+
     return (
         <HeaderStyled>
             <HeaderContainer>
-
                 <Logo href="/">
-                    <img src="/images/logo-textuaria-amarelo.webp" alt="Textuaria" />
+                    <LogoTextuaria width="100%" color="#fff" />
                 </Logo>
 
-                <nav id="nav-header">
-                    <Hamburger>
-                        <span className="hamburger__line"></span>
-                        <span className="hamburger__line"></span>
-                        <span className="hamburger__line"></span>
-                    </Hamburger>
+                <NavStyled id="nav-header" className={ activeMobileMenu ? 'active' : ''}>
+                    <span style={{ width: 130 +'px' }}></span>
 
-                    <MenuLinksList>
-                        <li className="active">
-                            <a href="#">O que fazemos</a>
-                        </li>
+                    <MenuLinksList >
+                        <li className={  'active' }><a href="#">O que fazemos</a></li>
                         <li><a href="#">Quem somos</a></li>
                         <li><a href="#">Cases</a></li>
                         <li><a href="#">Depoimentos</a></li>
                         <li><a href="#">Loja</a></li>
                         <li><a href="#">Contatos</a></li>
                     </MenuLinksList>
-                </nav>
 
-                <SocialIcons>
-                    <SocialIcon href="www.facebook.com" target="_blank" primaryImage={facebookGreenIcon} secondaryImage={facebookRedIcon} />
-                    <SocialIcon href="www.facebook.com" target="_blank" primaryImage={spotfyGreenIcon} secondaryImage={spotfyRedIcon} />
-                    <SocialIcon href="www.facebook.com" target="_blank" primaryImage={instagramGreenIcon} secondaryImage={instagramRedIcon} />
-                </SocialIcons>
+                    <SocialIcons>
+                        <li>
+                            <a href="www.facebook.com" target="_blank">
+                                <FacebookIcon />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="www.instagram.com" target="_blank">
+                                <InstagramIcon />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="www.instagram.com" target="_blank">
+                                <SpotifyIcon />
+                            </a>
+                        </li>
+                    </SocialIcons>
+                </NavStyled>
+
+                <Hamburger onClick={ () => setActiveMobileMenu(!activeMobileMenu) } className={ activeMobileMenu ? 'active' : ''}>
+                    <span className="hamburger__line"></span>
+                    <span className="hamburger__line"></span>
+                    <span className="hamburger__line"></span>
+                </Hamburger>
+
             </HeaderContainer>
         </HeaderStyled>
     )
@@ -51,66 +63,100 @@ export { Header }
 
 const HeaderStyled = styled.header`
     width: 100vw;
-    height: 50px;
-    background-color: var(--yellow);
     position: fixed;
-    top: 50px;
+    top: 25px;
     z-index: 9999;
 `
 
 const HeaderContainer = styled(Container)`
-        height: 100%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
 `
 
 const Logo = styled.a`
-    height: 120px;
-    transition: 200ms ease-in-out;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #00000025;
+    width: 130px;
     min-width: 100px;
+    transition: 200ms ease-in-out;
+    
+    svg path {
+        transition: 200ms ease-in-out;
+    }
 
     &:hover {
         scale: 1.05;
-        rotate: 5deg;
+
+        & svg path {
+            fill: var(--green) !important;
         }
+    }
+
 
     @media screen and (max-width: 1024px) {
         width: 100px;
         height: 100px;
     }
+`
 
-    img {
-        object-fit: contain;
-        object-position: 1% 3%;
-        border-radius: 100%;
-        width: 100%;
-        height: 100%;
+const NavStyled = styled.nav`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    @media screen and (max-width: 1024px) {
+        height: 100vh;
+        width: 250px;
+        background-color: #91C09Eda;
+        right: -25px;
+        position: relative;
+        top: -25px;
+        padding: 80px 30px;
+
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+        align-items: flex-start;
+
+        transition: 200ms ease-in-out;
+        transform: translateX(100%);
+        opacity: 0;
+            
+        &.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
-`
-
-const Hamburger = styled.button`
-    width: 30px;
-    height: 25px;
-    display: none;
-    border: none;
-    background: none;
-    cursor: pointer;
-`
+`    
 
 const MenuLinksList = styled.ul`
     display: flex;
-    transition: 200ms ease-in-out;
+    align-self: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 
+    @media screen and (max-width: 1024px) {
+        flex-direction: column;
+        position: relative;
+        margin-top: 30px;
+        width: 100%;
+    }
+    
     li {
         margin: 0px 25px;
+        width: max-content;
+        text-align: right;
 
-        &.active {
-            a {
-                font-weight: 600;
+        @media screen and (max-width: 1024px) {
+            margin: 0px;
+
+            &::after {
+                content: '';
+                border-bottom: 1px solid #ffffff45;
+                display: block;
+                width: 100%;
+                margin: 20px 0;
             }
         }
         
@@ -118,48 +164,109 @@ const MenuLinksList = styled.ul`
             display: block;
             position: relative;
             text-decoration: none;
-            color: var(--text-color);
+            color: var(--white);
             transition: 200ms ease-in-out;
 
             &:after {
                 content: '';
                 display: block;
                 position: absolute;
-                bottom: -13px;
-                border-bottom: 3px solid var(--red);
+                bottom: -10px;
+                border-bottom: 3px solid var(--green);
                 width: 0;
                 height: 0;
                 transition: 200ms ease-in-out;
             }  
 
             &:hover {
-                scale: 1.05;
-
                 &:after {
                     width: 100%;
                 }
             }
         }
+
+        &.active {
+            a {
+                font-weight: 600;
+            }
+        }
     }
 `
 
-const SocialIcons = styled.div`
+const SocialIcons = styled.ul`
     display: flex;
+    align-items: center;
+
+    li {
+        margin-left: 10px;
+
+        @media screen and (max-width: 1024px) {
+            &:first-child {
+                margin-left: 0;
+            } 
+        }
+        
+        a {
+            width: fit-content;
+            
+        }
+        
+        svg {
+            &:hover > path {
+                fill: var(--green);
+
+                @media screen and (max-width: 1024px) {
+                    fill: var(--white); 
+                }
+            }
+            
+            path {
+                transition: 200ms ease-in-out;
+            }
+        }
+    }
 `
 
-const SocialIcon = styled.a`
- background-image: url(${spotfyGreenIcon.src});
- background-image: url(${props => props.primaryImage.src});
- background-size: cover;
- width: 25px;
- height: 25px;
- transition: 200ms ease-in-out;
- margin-left: 10px;
+const Hamburger = styled.button`
+    display: none;
+    border: none;
+    background: none;
+    cursor: pointer;
 
- &:hover {
-    background-image: url(${props => props.secondaryImage.src});
- }
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      z-index: 9999;
+      top: 0; 
+      right: 15px;
+    }
+
+    & .hamburger__line {
+        width: 30px;
+        height: 4px;
+        margin-bottom: 5px;
+        background-color: #fff;
+        display: block;
+        position: relative;
+        transition: 200ms ease-in-out;    
+    }
+
+    &.active {
+        span {
+            &:first-of-type {
+                transform: translateY(9px) rotate(135deg);
+            }
+
+            &:nth-of-type(2) {
+                opacity: 0;
+            }
+
+            &:last-of-type {
+                transform: translateY(-9px) rotate(-135deg);
+            }
+
+        }
+    }
 `
-
-
 
